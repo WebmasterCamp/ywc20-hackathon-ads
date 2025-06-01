@@ -3,6 +3,7 @@
 import { use, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,8 +19,11 @@ interface Props {
 
 export default function RentPetPage({ params }: Props) {
   const { id } = use(params)
+  const router = useRouter()
   const pet = dogs.find(dog => dog.id === parseInt(id))
   const [days, setDays] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const [idCardImage, setIdCardImage] = useState<string | null>(null)
 
   if (!pet) {
     return (
@@ -54,20 +58,54 @@ export default function RentPetPage({ params }: Props) {
             <h2 className="text-lg font-semibold mb-4">รูปบัตรประชาชน</h2>
             <p className="text-gray-600 mb-4">เพื่อรายละเอียดครบถ้วนชัดเจน</p>
             <div className="border-2 border-dashed rounded-lg p-8 text-center">
-              <div className="mb-4">
-                <Input
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  id="idCard"
-                />
-                <Label
-                  htmlFor="idCard"
-                  className="inline-block px-6 py-3 bg-black text-white rounded-md cursor-pointer hover:bg-gray-800"
-                >
-                  อัพโหลดรูปภาพ
-                </Label>
-              </div>
+              {idCardImage ? (
+                <div className="space-y-4">
+                  <div className="relative w-full h-48 mx-auto overflow-hidden rounded-lg">
+                    <Image 
+                      src={idCardImage} 
+                      alt="ID Card Preview" 
+                      fill 
+                      className="object-contain" 
+                    />
+                  </div>
+                  <div className="flex justify-center gap-4">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setIdCardImage(null)}
+                    >
+                      เปลี่ยนรูป
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mb-4">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    id="idCard"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0]
+                      if (file) {
+                        const reader = new FileReader()
+                        reader.onload = (event) => {
+                          if (event.target?.result) {
+                            setIdCardImage(event.target.result as string)
+                          }
+                        }
+                        reader.readAsDataURL(file)
+                      }
+                    }}
+                  />
+                  <Label
+                    htmlFor="idCard"
+                    className="inline-block px-6 py-3 bg-black text-white rounded-md cursor-pointer hover:bg-gray-800"
+                  >
+                    อัพโหลดรูปภาพ
+                  </Label>
+                </div>
+              )}
             </div>
           </div>
 
@@ -115,9 +153,24 @@ export default function RentPetPage({ params }: Props) {
             </div>
           </div>
 
-          <Button size="lg" className="w-full bg-black text-white hover:bg-gray-800">
-            บันทึก และไปต่อ
+          <Button 
+            size="lg" 
+            className="w-full bg-black text-white hover:bg-gray-800"
+            onClick={() => {
+              setLoading(true)
+              // Here you would normally submit the form data to your backend
+              // For now, we'll just simulate a delay
+              setTimeout(() => {
+                router.push('/status')
+              }, 1000)
+            }}
+            disabled={loading || !idCardImage}
+          >
+            {loading ? 'กำลังบันทึก...' : 'บันทึก และไปต่อ'}
           </Button>
+          {!idCardImage && (
+            <p className="text-red-500 text-sm text-center mt-2">* กรุณาอัพโหลดรูปบัตรประชาชนก่อนดำเนินการต่อ</p>
+          )}
         </div>
       </div>
     </div>

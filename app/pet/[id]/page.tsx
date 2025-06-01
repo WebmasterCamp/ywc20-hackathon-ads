@@ -1,6 +1,6 @@
 "use client"
 
-import { use } from "react"
+import { use, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -16,6 +16,9 @@ interface Props {
 export default function PetPage({ params }: Props) {
   const { id } = use(params)
   const pet = dogs.find(dog => dog.id === parseInt(id))
+  const [selectedImage, setSelectedImage] = useState(0)
+
+  const images = pet?.images || [pet?.image || "/placeholder.svg"]
 
   if (!pet) {
     return (
@@ -43,34 +46,45 @@ export default function PetPage({ params }: Props) {
       </Link>
 
       <div className="grid md:grid-cols-2 gap-8">
-        <div className="relative aspect-square bg-gray-200 rounded-lg overflow-hidden">
-          <Image 
-            src={pet.image || "/placeholder.svg"} 
-            alt={pet.name}
-            fill
-            className="object-cover"
-          />
+        <div className="space-y-4">
+          <div className="relative aspect-square bg-gray-200 rounded-lg overflow-hidden border-2 border-blue-500">
+            <Image 
+              src={images[selectedImage]} 
+              alt={pet.name}
+              fill
+              className="object-cover"
+            />
+          </div>
+          
+          <div className="grid grid-cols-5 gap-2">
+            {images.map((image, index) => (
+              <button
+                key={index}
+                onClick={() => setSelectedImage(index)}
+                className={`relative aspect-square rounded-lg overflow-hidden ${selectedImage === index ? 'ring-2 ring-blue-500' : 'hover:opacity-80'}`}
+              >
+                <Image 
+                  src={image} 
+                  alt={`${pet.name} ${index + 1}`}
+                  fill
+                  className="object-cover"
+                />
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>
-          <h1 className="text-3xl font-bold mb-2">{pet.name}</h1>
-          <div className="mb-4">
-            <p className="text-gray-600">{pet.breed}</p>
-            <p className="text-gray-600">{pet.age}</p>
+          <h1 className="text-2xl font-bold mb-6">{pet.name}</h1>
+          <div className="text-3xl font-bold mb-6">
+            {pet.pricePerDay.toLocaleString()} บาท/ วัน
           </div>
           
           <p className="text-gray-700 mb-6">{pet.description}</p>
           
-          <div className="mb-8">
-            <div className="text-3xl font-bold text-gray-900">
-              {pet.pricePerDay.toLocaleString()}
-              <span className="text-base font-normal text-gray-600 ml-1">บาท/วัน</span>
-            </div>
-          </div>
-
           <Link href={`/pet/${id}/rent`}>
-            <Button size="lg" className="w-full md:w-auto bg-black text-white hover:bg-gray-800">
-              เช่าตอนนี้
+            <Button size="lg" className="w-full bg-black text-white hover:bg-gray-800">
+              สนใจเช่า
             </Button>
           </Link>
         </div>
