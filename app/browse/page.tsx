@@ -440,27 +440,36 @@ export default function BrowsePage() {
           {/* Dog Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredDogs.map((dog) => (
-              <Card key={dog.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="aspect-square bg-gray-200 relative">
-                  <Image src={dog.image || "/placeholder.svg"} alt={dog.name} fill className="object-cover" />
-                </div>
-                <CardContent className="p-4">
-                  <div className="mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900">{dog.name}</h3>
-                    <p className="text-sm text-gray-600">{dog.age}</p>
+              <Link href={`/pet/${dog.id}`} key={dog.id} className="block">
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer">
+                  <div className="aspect-square bg-gray-200 relative">
+                    <Image src={dog.image || "/placeholder.svg"} alt={dog.name} fill className="object-cover" />
                   </div>
-                  <p className="text-sm text-gray-700 mb-3 line-clamp-2">{dog.description}</p>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-xl font-bold text-gray-900">{dog.pricePerDay.toLocaleString()}</span>
-                      <span className="text-sm text-gray-600 ml-1">บาท/วัน</span>
+                  <CardContent className="p-4">
+                    <div className="mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">{dog.name}</h3>
+                      <p className="text-sm text-gray-600">{dog.age}</p>
                     </div>
-                    <Button size="sm" className="bg-black text-white hover:bg-gray-800">
-                      เช่า
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                    <p className="text-sm text-gray-700 mb-3 line-clamp-2">{dog.description}</p>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-xl font-bold text-gray-900">{dog.pricePerDay.toLocaleString()}</span>
+                        <span className="text-sm text-gray-600 ml-1">บาท/วัน</span>
+                      </div>
+                      <Button 
+                        size="sm" 
+                        className="bg-black text-white hover:bg-gray-800"
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent the card's link from activating
+                          window.location.href = `/pet/${dog.id}`;
+                        }}
+                      >
+                        เช่า
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
 
