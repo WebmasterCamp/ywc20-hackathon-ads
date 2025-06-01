@@ -97,7 +97,7 @@ export default function Component() {
               <div className="flex flex-col gap-4 items-center">
                 <FeedbackDialog />
                 
-                <Link href="/browse" className="inline-block px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors">
+                <Link href="/" className="inline-block px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors">
                   กลับสู่หน้าหลัก
                 </Link>
               </div>
