@@ -68,9 +68,11 @@ export default function PetPage({ params }: Props) {
             </div>
           </div>
 
-          <Button size="lg" className="w-full md:w-auto bg-black text-white hover:bg-gray-800">
-            เช่าตอนนี้
-          </Button>
+          <Link href={`/pet/${id}/rent`}>
+            <Button size="lg" className="w-full md:w-auto bg-black text-white hover:bg-gray-800">
+              เช่าตอนนี้
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
