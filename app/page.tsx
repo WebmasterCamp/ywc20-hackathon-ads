@@ -1,10 +1,36 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+
+interface User {
+  name?: string
+  email: string
+}
 
 export default function HomePage() {
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check if user is logged in
+    const userStr = localStorage.getItem("currentUser")
+    if (userStr) {
+      setCurrentUser(JSON.parse(userStr))
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser")
+    setCurrentUser(null)
+    router.push("/auth")
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -25,7 +51,20 @@ export default function HomePage() {
               Link Four
             </Link>
           </nav>
-          <Button className="bg-black text-white hover:bg-gray-800">Search</Button>
+          <div className="flex items-center space-x-4">
+            {currentUser ? (
+              <>
+                <span className="text-gray-600">Welcome, {currentUser.name || currentUser.email}</span>
+                <Button onClick={handleLogout} className="bg-black text-white hover:bg-gray-800">
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Link href="/auth">
+                <Button className="bg-black text-white hover:bg-gray-800">Login</Button>
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 
