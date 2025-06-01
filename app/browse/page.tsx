@@ -22,14 +22,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  DialogTitle,
-  DialogHeader,
-  DialogDescription,
-} from "@/components/ui/dialog"
 
 // Mock data for dogs
 const dogs = [

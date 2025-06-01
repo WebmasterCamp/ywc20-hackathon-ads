@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react"
 import React from "react"
-import { ArrowLeft, CreditCard, FileCheck, Calendar, Clipboard, Package } from "lucide-react"
+import { ArrowLeft, CreditCard, FileCheck, Calendar, Clipboard, Package, Check } from "lucide-react"
 import Link from "next/link"
+import { FeedbackDialog } from "@/components/feedback-dialog"
 
 export default function Component() {
   const [currentStep, setCurrentStep] = useState(1)
@@ -15,14 +16,15 @@ export default function Component() {
     { number: "03", title: "นัดวัน\nประเมินหน้างาน", isActive: currentStep >= 3, icon: Calendar },
     { number: "04", title: "ประเมินหน้างาน", isActive: currentStep >= 4, icon: Clipboard },
     { number: "05", title: "ส่งมอบสัตว์เลี้ยง", isActive: currentStep >= 5, icon: Package },
+    { number: "06", title: "ส่งคืน\nสัตว์เลี้ยง", isActive: currentStep >= 6, icon: Check },
   ]
 
   useEffect(() => {
     // Auto-start the progress
     const timer = setTimeout(() => {
-      if (currentStep < 5) {
+      if (currentStep < 6) {
         setCurrentStep(prev => prev + 1)
-      } else if (currentStep === 5 && !completed) {
+      } else if (currentStep === 6 && !completed) {
         setCompleted(true)
       }
     }, 1500)
@@ -68,7 +70,7 @@ export default function Component() {
 
         {/* Status Message */}
         <div className="flex flex-col items-center gap-4">
-          {currentStep < 5 ? (
+          {currentStep < 6 ? (
             <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-100 max-w-md">
               <div className="animate-pulse mb-4">
                 <div className="w-12 h-12 mx-auto rounded-full bg-blue-500 flex items-center justify-center">
@@ -80,20 +82,25 @@ export default function Component() {
                 {currentStep === 2 && "กำลังตรวจสอบเอกสาร"}
                 {currentStep === 3 && "กำลังนัดหมายวันประเมิน"}
                 {currentStep === 4 && "กำลังประเมินหน้างาน"}
+                {currentStep === 5 && "กำลังส่งมอบสัตว์เลี้ยง"}
               </h3>
               <p className="text-blue-600">โปรดรอสักครู่...</p>
             </div>
           ) : (
             <div className="text-center p-8 bg-green-50 rounded-lg border border-green-100 max-w-md">
               <div className="w-16 h-16 mx-auto rounded-full bg-green-500 flex items-center justify-center mb-4">
-                <Package className="w-8 h-8 text-white" />
+                <Check className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-2xl font-bold text-green-600 mb-2">เสร็จสิ้นกระบวนการ</h2>
-              <p className="text-green-600 mb-6">การส่งมอบสัตว์เลี้ยงเสร็จสมบูรณ์</p>
+              <h2 className="text-2xl font-bold text-green-600 mb-2">การเช่าสิ้นเสร็จสิ้น</h2>
+              <p className="text-green-600 mb-6">การส่งคืนสัตว์เลี้ยงเสร็จสมบูรณ์ ขอบคุณที่ใช้บริการ</p>
               
-              <Link href="/browse" className="inline-block px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition-colors">
-                กลับสู่หน้าหลัก
-              </Link>
+              <div className="flex flex-col gap-4 items-center">
+                <FeedbackDialog />
+                
+                <Link href="/browse" className="inline-block px-6 py-3 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors">
+                  กลับสู่หน้าหลัก
+                </Link>
+              </div>
             </div>
           )}
         </div>
