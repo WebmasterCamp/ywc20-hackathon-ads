@@ -418,11 +418,11 @@ function StatusContent() {
                         </div>
                       </div>
                       <Link 
-                        href={`/return?petName=${encodeURIComponent(petName)}`}
+                        href={`/mypuppy`}
                         className="inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-md"
                       >
                         <Check className="mr-2 h-4 w-4" />
-                        ดำเนินการต่อไปยังการส่งคืน
+                        เกี่ยวกับสัตว์เลี้ยงของฉัน
                       </Link>
                     </div>
                   ) : (
@@ -475,6 +475,7 @@ function StatusContent() {
                     className="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 rounded-full mt-4 text-base font-kanit"
                   >
                     ยืนยันการส่งคืน
+                    
                   </Button>
                 </form>
               </div>

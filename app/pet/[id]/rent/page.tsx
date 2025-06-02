@@ -106,7 +106,7 @@ export default function RentPetPage({ params }: Props) {
                   />
                   <Label
                     htmlFor="idCard"
-                    className="inline-block px-6 py-3 bg-black text-white rounded-md cursor-pointer hover:bg-gray-800 rounded-full"
+                    className="inline-block px-6 py-3 bg-black text-white cursor-pointer hover:bg-gray-800 rounded-full"
                   >
                     อัพโหลดรูปภาพ
                   </Label>
