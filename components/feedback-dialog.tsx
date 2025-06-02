@@ -42,7 +42,7 @@ export function FeedbackDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-black text-white hover:bg-gray-800">ให้คะแนนการเช่า</Button>
+        <Button className="w-full bg-white text-black border-2 border-black font-medium rounded-full hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] active:shadow-lg py-3">ให้คะแนนการเช่า</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -92,7 +92,7 @@ export function FeedbackDialog() {
                 type="button"
                 onClick={handleSubmit}
                 disabled={rating === 0}
-                className="w-full bg-black text-white hover:bg-gray-800"
+                className="w-full bg-black text-white font-medium rounded-full hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] active:shadow-lg py-3"
               >
                 ส่งความคิดเห็น
               </Button>

@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useState } from "react"
+import { use } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -16,9 +16,6 @@ interface Props {
 export default function PetPage({ params }: Props) {
   const { id } = use(params)
   const pet = dogs.find(dog => dog.id === parseInt(id))
-  const [selectedImage, setSelectedImage] = useState(0)
-
-  const images = pet?.images || [pet?.image || "/placeholder.svg"]
 
   if (!pet) {
     return (
@@ -37,56 +34,75 @@ export default function PetPage({ params }: Props) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Link href="/browse" className="inline-block mb-6">
-        <Button variant="outline">
+    <div className="container max-w-4xl mx-auto px-4 py-6">
+      <Link href="/browse" className="inline-block mb-4">
+        <Button variant="ghost" size="sm" className="text-gray-600">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          กลับไปหน้ารายการ
+          กลับ
         </Button>
       </Link>
 
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="space-y-4">
-          <div className="relative aspect-square bg-gray-200 rounded-lg overflow-hidden border-2 border-blue-500">
-            <Image 
-              src={images[selectedImage]} 
-              alt={pet.name}
-              fill
-              className="object-cover"
-            />
+      <div className="mb-6">
+        <div className="relative aspect-[4/3] w-full rounded-lg overflow-hidden mb-4">
+          <Image 
+            src={pet.image} 
+            alt={pet.name}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute bottom-4 right-4">
+            <Button variant="outline" size="sm" className="bg-white/80 backdrop-blur-sm text-xs rounded-full px-3 py-1 h-auto">
+              Show all photos
+            </Button>
           </div>
-          
-          <div className="grid grid-cols-5 gap-2">
-            {images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={`relative aspect-square rounded-lg overflow-hidden ${selectedImage === index ? 'ring-2 ring-blue-500' : 'hover:opacity-80'}`}
-              >
-                <Image 
-                  src={image} 
-                  alt={`${pet.name} ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </button>
-            ))}
+        </div>
+      </div>
+
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">{pet.name}</h1>
+          <p className="text-gray-600">{pet.breed} · {pet.age}</p>
+        </div>
+
+        <div className="border-t border-b py-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <div className="text-2xl font-bold">{pet.pricePerDay.toLocaleString()} บาท/ วัน</div>
+            </div>
+            <Link href={`/pet/${id}/rent`}>
+              <Button className="bg-black text-white hover:bg-gray-800 px-6">
+                สนใจเช่า
+              </Button>
+            </Link>
           </div>
         </div>
 
-        <div>
-          <h1 className="text-2xl font-bold mb-6">{pet.name}</h1>
-          <div className="text-3xl font-bold mb-6">
-            {pet.pricePerDay.toLocaleString()} บาท/ วัน
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">เกี่ยวกับน้องหมาตัวนี้</h2>
+          <p className="text-gray-700 leading-relaxed">{pet.description}</p>
+          
+          <div className="mt-6 space-y-4">
+            <h3 className="font-medium">คุณลักษณะพิเศษ</h3>
+            <ul className="grid grid-cols-2 gap-2 text-sm">
+              <li className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                <span>เป็นมิตรกับเด็ก</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                <span>ฝึกมาแล้ว</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                <span>สุขภาพแข็งแรง</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                <span>ได้รับวัคซีนครบ</span>
+              </li>
+            </ul>
           </div>
-          
-          <p className="text-gray-700 mb-6">{pet.description}</p>
-          
-          <Link href={`/pet/${id}/rent`}>
-            <Button size="lg" className="w-full bg-black text-white hover:bg-gray-800">
-              สนใจเช่า
-            </Button>
-          </Link>
         </div>
       </div>
     </div>

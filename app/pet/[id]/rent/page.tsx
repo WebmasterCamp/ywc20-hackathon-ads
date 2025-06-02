@@ -160,8 +160,9 @@ export default function RentPetPage({ params }: Props) {
               setLoading(true)
               // Here you would normally submit the form data to your backend
               // For now, we'll just simulate a delay
+              const totalPrice = pet.pricePerDay * days;
               setTimeout(() => {
-                router.push('/status')
+                router.push(`/status?price=${totalPrice}&days=${days}&petName=${encodeURIComponent(pet.name)}`)
               }, 1000)
             }}
             disabled={loading || !idCardImage}

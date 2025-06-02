@@ -1,11 +1,11 @@
 export const dogs = [
   {
     id: 1,
-    name: "ชิบะ มิโกะ",
+    name: "มิโกะ",
     breed: "ชิบะ",
     age: "1-2 ปี",
     pricePerDay: 2400,
-    image: "/dogs/shiba1.jpg",
+    image: "/dogs/shiba.jpg",
     images: [
       "/dogs/shiba1.jpg",
       "/dogs/shiba1-2.jpg",
@@ -13,11 +13,11 @@ export const dogs = [
       "/dogs/shiba1-4.jpg",
       "/dogs/shiba1-5.jpg"
     ],
-    description: "หมาชิบะสีน้ำตาลทองสวยงาม เชื่อฟังและเป็นมิตรกับเด็ก เหมาะสำหรับครอบครัว",
+    description: "มิโกะเป็นหมาชิบะสีน้ำตาลทองสวยงาม เชื่อฟังและเป็นมิตรกับเด็ก เหมาะสำหรับครอบครัวที่มีเด็กเล็ก สามารถฝึกได้ง่าย ชอบเล่นกับลูกบอลและของเล่นที่มีเสียง ไม่ชอบอยู่คนเดียวเป็นเวลานาน ต้องการการเอาใจใส่และการเล่นที่สม่ำเสมอ ชอบกินอาหารประเภทเนื้อและปลา",
   },
   {
     id: 2,
-    name: "ชิบะ ฮานะ",
+    name: "ฮานะ",
     breed: "ชิบะ",
     age: "2-3 ปี",
     pricePerDay: 2400,
@@ -33,7 +33,7 @@ export const dogs = [
   },
   {
     id: 3,
-    name: "ชิบะ โคจิ",
+    name: "โคจิ",
     breed: "ชิบะ",
     age: "1-2 ปี",
     pricePerDay: 2400,
@@ -49,11 +49,11 @@ export const dogs = [
   },
   {
     id: 4,
-    name: "ไซบี ลูน่า",
-    breed: "ไซบี",
+    name: "ลูน่า",
+    breed: "ไซบีเรียน",
     age: "3-4 ปี",
     pricePerDay: 2800,
-    image: "/dogs/husky1.jpg",
+    image: "/dogs/siberian.jpg",
     images: [
       "/dogs/husky1.jpg",
       "/dogs/husky1-2.jpg",
@@ -65,11 +65,11 @@ export const dogs = [
   },
   {
     id: 5,
-    name: "ไซบี แม็กซ์",
-    breed: "ไซบี",
+    name: "แม็กซ์",
+    breed: "ไซบีเรียน",
     age: "2-3 ปี",
     pricePerDay: 2800,
-    image: "/dogs/husky2.jpg",
+    image: "/dogs/siberian2.jpg",
     images: [
       "/dogs/husky2.jpg",
       "/dogs/husky2-2.jpg",
@@ -85,7 +85,7 @@ export const dogs = [
     breed: "พันธ์ทาง",
     age: "4-5 ปี",
     pricePerDay: 2000,
-    image: "/dogs/mixed1.jpg",
+    image: "/dogs/house.jpg",
     images: [
       "/dogs/mixed1.jpg",
       "/dogs/mixed1-2.jpg",

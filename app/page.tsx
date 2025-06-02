@@ -3,10 +3,10 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { dogs } from "@/data/dogs"
 
 interface User {
   name?: string
@@ -23,6 +23,24 @@ export default function HomePage() {
     if (userStr) {
       setCurrentUser(JSON.parse(userStr))
     }
+
+    // Add smooth scrolling behavior
+    const handleSmoothScroll = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
+        e.preventDefault();
+        const id = target.getAttribute('href');
+        const element = document.querySelector(id as string);
+        if (element) {
+          element.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      }
+    };
+
+    document.addEventListener('click', handleSmoothScroll);
+    return () => document.removeEventListener('click', handleSmoothScroll);
   }, [])
 
   const handleLogout = () => {
@@ -34,34 +52,34 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+      <header className="bg-white">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold text-black">Logo</div>
+          <div className="text-2xl font-bold text-black">PetRenting</div>
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="#" className="text-gray-600 hover:text-gray-900">
-              Link One
+            <Link href="#hero" className="text-gray-600 hover:text-gray-900">
+              หน้าแรก
             </Link>
-            <Link href="#" className="text-gray-600 hover:text-gray-900">
-              Link Two
+            <Link href="/browse" className="text-gray-600 hover:text-gray-900">
+              เช่าสัตว์เลี้ยง
             </Link>
-            <Link href="#" className="text-gray-600 hover:text-gray-900">
-              Link Three
+            <Link href="#services" className="text-gray-600 hover:text-gray-900">
+              บริการของเรา
             </Link>
-            <Link href="#" className="text-gray-600 hover:text-gray-900">
-              Link Four
+            <Link href="#contact" className="text-gray-600 hover:text-gray-900">
+              ติดต่อเรา
             </Link>
           </nav>
           <div className="flex items-center space-x-4">
             {currentUser ? (
               <>
-                <span className="text-gray-600">Welcome, {currentUser.name || currentUser.email}</span>
-                <Button onClick={handleLogout} className="bg-black text-white hover:bg-gray-800">
-                  Logout
+                <span className="text-gray-600">สวัสดี, {currentUser.name || currentUser.email}</span>
+                <Button onClick={handleLogout} className="bg-green-500 text-white hover:bg-green-600">
+                  ออกจากระบบ
                 </Button>
               </>
             ) : (
               <Link href="/auth">
-                <Button className="bg-black text-white hover:bg-gray-800">Login</Button>
+                <Button className="bg-green-500 text-white hover:bg-green-600">เข้าสู่ระบบ</Button>
               </Link>
             )}
           </div>
@@ -69,51 +87,92 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gray-600 text-white py-24 md:py-32">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm uppercase tracking-wider mb-4">TagLine</p>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">Short heading here</h1>
-          <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum
-            tristique.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-black text-white hover:bg-gray-800 px-8 py-3">Get started</Button>
-            <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-600 px-8 py-3">
-              Learn more
-            </Button>
+      <section id="hero" className="bg-sky-100 text-white relative overflow-hidden">
+        <div className="container mx-auto px-4 py-16 md:py-24 flex flex-col md:flex-row items-center">
+          <div className="md:w-1/2 text-left z-10">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-sky-900">ไม่ยากถ้าอยาก<br />ลองเลี้ยง</h1>
+            <p className="text-base md:text-lg text-sky-800 mb-8 max-w-md">
+              บริการเช่าสัตว์เลี้ยงที่คุณสามารถเลือกได้ตามต้องการ เพื่อให้คุณได้ทดลองเลี้ยงก่อนตัดสินใจ ทั้งสุนัข แมว และสัตว์เลี้ยงอื่นๆอีกมากมาย
+            </p>
+            <Link href="/browse">
+              <Button className="bg-green-500 text-white hover:bg-green-600 px-8 py-3 rounded-full">
+                เริ่มเลี้ยงเลย
+              </Button>
+            </Link>
           </div>
+          <div className="md:w-1/2 relative z-10 mt-8 md:mt-0">
+            <div className="relative">
+              <Image 
+                src="/images/herosectiondog.png" 
+                alt="Happy dog" 
+                width={600} 
+                height={600} 
+                className="object-contain" 
+                priority
+              />
+              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-sky-200 opacity-50"></div>
+              <div className="absolute top-20 -left-10 w-16 h-16 rounded-full bg-sky-200 opacity-50"></div>
+              <div className="absolute bottom-20 right-20 w-24 h-24 rounded-full bg-sky-200 opacity-50"></div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Wave design at bottom */}
+        <div className="absolute bottom-0 left-0 w-full">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
+            <path fill="#ffffff" fillOpacity="1" d="M0,192L80,176C160,160,320,128,480,128C640,128,800,160,960,165.3C1120,171,1280,149,1360,138.7L1440,128L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+          </svg>
         </div>
       </section>
 
       {/* Service Overview */}
-      <section className="py-16 md:py-24 bg-white">
+      <section id="services" className="py-16 md:py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <p className="text-sm uppercase tracking-wider text-gray-600 mb-2">TagLine</p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Service overview</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+            <p className="text-sm text-sky-600 mb-2">Service overview</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">ก่อนพบเพื่อนคู่ใจ</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">บริการของเราช่วยให้คุณได้เรียนรู้และทดลองเลี้ยงสัตว์ก่อนตัดสินใจเลี้ยงจริง ด้วยระบบที่ปลอดภัยและเป็นมิตร</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="bg-gray-600 text-white p-8 rounded-lg">
-                <div className="w-16 h-16 bg-gray-500 rounded mb-6 flex items-center justify-center">
-                  <Image
-                    src="/placeholder.svg?height=32&width=32"
-                    alt="Service icon"
-                    width={32}
-                    height={32}
-                    className="opacity-50"
-                  />
-                </div>
-                <h3 className="text-xl font-bold mb-4">Medium length section heading goes here</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum
-                  tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla.
-                </p>
+            <div className="rounded-xl overflow-hidden relative h-[450px] group">
+              <Image 
+                src="/images/Card-1.png" 
+                alt="เรียนรู้วิธีเลี้ยงสุนัข" 
+                fill
+                className="object-cover" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 flex flex-col justify-end text-white">
+                <h3 className="text-2xl font-bold mb-2">เรียนรู้วิธีเลี้ยงสุนัข</h3>
+                <p className="text-sm opacity-90">เรียนรู้วิธีการดูแลสุนัขอย่างถูกต้อง ทั้งเรื่องอาหาร การฝึก การดูแลสุขภาพ และการเล่นกับสุนัขอย่างปลอดภัย</p>
               </div>
-            ))}
+            </div>
+            
+            <div className="rounded-xl overflow-hidden relative h-[450px] group">
+              <Image 
+                src="/images/Card-2.png" 
+                alt="บริการเช่าสุนัข" 
+                fill
+                className="object-cover" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 flex flex-col justify-end text-white">
+                <h3 className="text-2xl font-bold mb-2">บริการเช่าสุนัข</h3>
+                <p className="text-sm opacity-90">บริการเช่าสุนัขหลากหลายสายพันธุ์ ทั้งสุนัขขนาดเล็กและใหญ่ ให้คุณได้ทดลองเลี้ยงก่อนตัดสินใจรับเลี้ยงจริง</p>
+              </div>
+            </div>
+            
+            <div className="rounded-xl overflow-hidden relative h-[450px] group">
+              <Image 
+                src="/images/Card.png" 
+                alt="ตัวกลางการขนส่ง" 
+                fill
+                className="object-cover" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6 flex flex-col justify-end text-white">
+                <h3 className="text-2xl font-bold mb-2">ตัวกลางการขนส่ง</h3>
+                <p className="text-sm opacity-90">บริการขนส่งสัตว์เลี้ยงถึงบ้านคุณอย่างปลอดภัย พร้อมคำแนะนำในการดูแลและอุปกรณ์ที่จำเป็นสำหรับการเลี้ยงดู</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -123,34 +182,35 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Recommend dog</h2>
-            <p className="text-gray-600">เเนะนําหมาที่เลี้ยงง่าย</p>
+            <p className="text-gray-600">เแนะนําหมาที่เลี้ยงง่าย</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="bg-white rounded-lg overflow-hidden shadow-sm">
-                <div className="aspect-video bg-gray-200 flex items-center justify-center">
+            {dogs.slice(0, 3).map((dog) => (
+              <div key={dog.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
+                <div className="aspect-video bg-gray-200 flex items-center justify-center relative overflow-hidden">
                   <Image
-                    src="/placeholder.svg?height=200&width=300"
-                    alt="Dog breed"
+                    src={dog.image}
+                    alt={dog.name}
                     width={300}
                     height={200}
-                    className="opacity-50"
+                    className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">Medium length section heading goes here</h3>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{dog.name}</h3>
                   <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum
-                    tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla.
+                    {dog.description.length > 120 ? `${dog.description.substring(0, 120)}...` : dog.description}
                   </p>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" className="text-xs">
-                      เเนะนํา
+                      เแนะนํา
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-xs text-gray-500">
-                      ดูรายละเอียด
-                    </Button>
+                    <Link href={`/pet/${dog.id}`}>
+                      <Button variant="ghost" size="sm" className="text-xs text-gray-500">
+                        ดูรายละเอียด
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -160,90 +220,70 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-12">
+      <footer id="contact" className="py-12 md:py-16 bg-gray-100">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-5 gap-8">
-            {/* Newsletter Signup */}
-            <div className="md:col-span-2">
-              <div className="text-2xl font-bold text-black mb-4">Logo</div>
-              <p className="text-sm text-gray-600 mb-4">
-                Join our newsletter to stay up to date on features and releases.
-              </p>
-              <div className="flex gap-2 mb-4">
-                <Input type="email" placeholder="Enter your email" className="flex-1" />
-                <Button className="bg-black text-white hover:bg-gray-800">Subscribe</Button>
-              </div>
-              <p className="text-xs text-gray-500">
-                By subscribing you agree to with our Privacy Policy and provide consent to receive updates from our
-                company.
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            <div className="md:col-span-2 lg:col-span-1">
+              <div className="text-2xl font-bold text-gray-900 mb-4">PetRenting</div>
+              <p className="text-gray-600 mb-6 max-w-xs">
+                บริการเช่าสัตว์เลี้ยงที่คุณสามารถเลือกได้ตามต้องการ เพื่อให้คุณได้ทดลองเลี้ยงก่อนตัดสินใจ
               </p>
             </div>
 
-            {/* Footer Links */}
             <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Column One</h4>
+              <h4 className="font-semibold text-gray-900 mb-4">บริการของเรา</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>
                   <Link href="#" className="hover:text-gray-900">
-                    Link One
+                    เช่าสุนัข
                   </Link>
                 </li>
                 <li>
                   <Link href="#" className="hover:text-gray-900">
-                    Link Two
+                    เช่าแมว
                   </Link>
                 </li>
                 <li>
                   <Link href="#" className="hover:text-gray-900">
-                    Link Three
+                    เช่าสัตว์เลี้ยงอื่นๆ
                   </Link>
                 </li>
                 <li>
                   <Link href="#" className="hover:text-gray-900">
-                    Link Four
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-gray-900">
-                    Link Five
+                    บริการส่งสัตว์เลี้ยง
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Column Two</h4>
+              <h4 className="font-semibold text-gray-900 mb-4">ช่วยเหลือ</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>
                   <Link href="#" className="hover:text-gray-900">
-                    Link Six
+                    คำถามที่พบบ่อย
                   </Link>
                 </li>
                 <li>
                   <Link href="#" className="hover:text-gray-900">
-                    Link Seven
+                    นโยบายการเช่า
                   </Link>
                 </li>
                 <li>
                   <Link href="#" className="hover:text-gray-900">
-                    Link Eight
+                    วิธีการเช่า
                   </Link>
                 </li>
                 <li>
                   <Link href="#" className="hover:text-gray-900">
-                    Link Nine
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-gray-900">
-                    Link Ten
+                    ติดต่อเรา
                   </Link>
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Follow Us</h4>
+              <h4 className="font-semibold text-gray-900 mb-4">ติดตามเรา</h4>
               <div className="flex space-x-4 mb-4">
                 <Link href="#" className="text-gray-600 hover:text-gray-900">
                   <Facebook size={20} />
@@ -258,44 +298,19 @@ export default function HomePage() {
                   <Youtube size={20} />
                 </Link>
               </div>
-              <ul className="space-y-2 text-sm text-gray-600">
-                <li>
-                  <Link href="#" className="hover:text-gray-900">
-                    Facebook
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-gray-900">
-                    Instagram
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-gray-900">
-                    Twitter
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-gray-900">
-                    YouTube
-                  </Link>
-                </li>
-              </ul>
             </div>
           </div>
 
           <hr className="my-8 border-gray-200" />
 
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
-            <p>© 2024 Relume. All rights reserved.</p>
+            <p>© 2025 PetRenting. All rights reserved.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <Link href="#" className="hover:text-gray-900">
-                Privacy Policy
+                นโยบายความเป็นส่วนตัว
               </Link>
               <Link href="#" className="hover:text-gray-900">
-                Terms of Service
-              </Link>
-              <Link href="#" className="hover:text-gray-900">
-                Cookies Settings
+                เงื่อนไขการใช้บริการ
               </Link>
             </div>
           </div>

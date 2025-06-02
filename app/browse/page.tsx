@@ -22,69 +22,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-
-// Mock data for dogs
-const dogs = [
-  {
-    id: 1,
-    name: "ชิบะ มิโกะ",
-    breed: "ชิบะ",
-    age: "1-2 ปี",
-    pricePerDay: 2400,
-    image: "/placeholder.svg?height=300&width=300",
-    description: "หมาชิบะสีน้ำตาลทองสวยงาม เชื่อฟังและเป็นมิตรกับเด็ก เหมาะสำหรับครอบครัว",
-  },
-  {
-    id: 2,
-    name: "ชิบะ ฮานะ",
-    breed: "ชิบะ",
-    age: "2-3 ปี",
-    pricePerDay: 2400,
-    image: "/placeholder.svg?height=300&width=300",
-    description: "หมาชิบะสีขาวสะอาด มีนิสัยร่าเริงและชอบเล่น เหมาะกับคนที่ชอบความสนุกสนาน",
-  },
-  {
-    id: 3,
-    name: "ชิบะ โคจิ",
-    breed: "ชิบะ",
-    age: "1-2 ปี",
-    pricePerDay: 2400,
-    image: "/placeholder.svg?height=300&width=300",
-    description: "หมาชิบะตัวผู้สีแดง มีความภักดีสูงและเป็นหมาเฝ้าบ้านที่ดี",
-  },
-  {
-    id: 4,
-    name: "ไซบี ลูน่า",
-    breed: "ไซบี",
-    age: "3-4 ปี",
-    pricePerDay: 2800,
-    image: "/placeholder.svg?height=300&width=300",
-    description: "หมาไซบีเรียนฮัสกี้สีขาวดำ มีพลังงานสูงและชอบการออกกำลังกาย",
-  },
-  {
-    id: 5,
-    name: "ไซบี แม็กซ์",
-    breed: "ไซบี",
-    age: "2-3 ปี",
-    pricePerDay: 2800,
-    image: "/placeholder.svg?height=300&width=300",
-    description: "หมาไซบีเรียนฮัสกี้ตาสีฟ้า มีนิสัยเป็นมิตรและชอบเล่นกับเด็ก",
-  },
-  {
-    id: 6,
-    name: "พันธ์ทาง บัดดี้",
-    breed: "พันธ์ทาง",
-    age: "4-5 ปี",
-    pricePerDay: 2000,
-    image: "/placeholder.svg?height=300&width=300",
-    description: "หมาพันธ์ทางขนาดกลาง มีนิสัยอ่อนโยนและเข้ากับคนง่าย",
-  },
-]
+import { dogs } from "@/data/dogs"
 
 export default function BrowsePage() {
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([])
   const [selectedAges, setSelectedAges] = useState<string[]>([])
   const [priceRange, setPriceRange] = useState([1000, 5000])
+  const [displayPriceRange, setDisplayPriceRange] = useState([1000, 5000])
+  const priceRangeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const [showMobileFilters, setShowMobileFilters] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [breedOptions, setBreedOptions] = useState<string[]>([])
@@ -332,10 +277,39 @@ export default function BrowsePage() {
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">ราคา/วัน</h3>
         <div className="px-2">
-          <Slider value={priceRange} onValueChange={setPriceRange} max={5000} min={1000} step={100} className="mb-4" />
-          <div className="flex justify-between text-sm text-gray-600">
-            <span>฿{priceRange[0].toLocaleString()}</span>
-            <span>฿{priceRange[1].toLocaleString()}</span>
+          <div className="mb-6 pt-4">
+            <Slider 
+              value={displayPriceRange} 
+              onValueChange={(newValues) => {
+                // Ensure the minimum value is not greater than the maximum value
+                if (newValues[0] <= newValues[1]) {
+                  setDisplayPriceRange(newValues);
+                  
+                  // Clear any existing timeout
+                  if (priceRangeTimeoutRef.current) {
+                    clearTimeout(priceRangeTimeoutRef.current);
+                  }
+                  
+                  // Set a new timeout to update the actual price range
+                  priceRangeTimeoutRef.current = setTimeout(() => {
+                    setPriceRange(newValues);
+                  }, 500); // Only update the actual filter after 500ms of no sliding
+                }
+              }} 
+              max={5000} 
+              min={1000} 
+              step={100} 
+              className="mb-4" 
+            />
+            <div className="flex justify-between items-center mt-2">
+              <div className="bg-gray-100 rounded-md px-3 py-1.5">
+                <span className="text-sm font-medium">฿{displayPriceRange[0].toLocaleString()}</span>
+              </div>
+              <div className="h-[1px] flex-1 bg-gray-200 mx-2"></div>
+              <div className="bg-gray-100 rounded-md px-3 py-1.5">
+                <span className="text-sm font-medium">฿{displayPriceRange[1].toLocaleString()}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -345,6 +319,7 @@ export default function BrowsePage() {
           setSelectedBreeds([])
           setSelectedAges([])
           setPriceRange([1000, 5000])
+          setDisplayPriceRange([1000, 5000])
           setSearchQuery("")
         }}
         variant="outline"
@@ -425,7 +400,7 @@ export default function BrowsePage() {
             </div>
           </div>
           <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">ชิบะ</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">ผลการค้นหา</h2>
             <p className="text-gray-600">พบ {filteredDogs.length} ตัวเลือก</p>
           </div>
 
@@ -473,6 +448,7 @@ export default function BrowsePage() {
                   setSelectedBreeds([])
                   setSelectedAges([])
                   setPriceRange([1000, 5000])
+                  setDisplayPriceRange([1000, 5000])
                   setSearchQuery("")
                 }}
                 variant="outline"
