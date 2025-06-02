@@ -29,14 +29,14 @@ function StatusContent() {
     { number: "06", title: "ส่งคืน\nสัตว์เลี้ยง", isActive: currentStep >= 6, icon: Check },
   ]
 
-  // Only auto-progress for steps after payment (step 1)
+  // Only auto-progress for steps after payment (step 1) and before step 5
   useEffect(() => {
-    // Skip auto-progress for step 1 (payment)
-    if (currentStep === 1) return;
+    // Skip auto-progress for step 1 (payment) and step 5 (ส่งมอบสัตว์เลี้ยง)
+    if (currentStep === 1 || currentStep === 5) return;
     
     // Auto-start the progress for other steps
     const timer = setTimeout(() => {
-      if (currentStep < 6) {
+      if (currentStep < 5) {
         setCurrentStep(prev => prev + 1)
       } else if (currentStep === 6 && !completed) {
         setCompleted(true)
@@ -206,7 +206,20 @@ function StatusContent() {
                 {currentStep === 4 && "กำลังประเมินหน้างาน"}
                 {currentStep === 5 && "กำลังส่งมอบสัตว์เลี้ยง"}
               </h3>
-              <p className="text-blue-600">โปรดรอสักครู่...</p>
+              {currentStep === 5 ? (
+                <>
+                  <p className="text-blue-600 mb-4">การส่งมอบสัตว์เลี้ยงเสร็จสมบูรณ์</p>
+                  <Link 
+                    href={`/return?petName=${encodeURIComponent(petName)}`}
+                    className="inline-flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-medium px-4 py-2 rounded-md"
+                  >
+                    <Check className="mr-2 h-4 w-4" />
+                    ดำเนินการต่อ
+                  </Link>
+                </>
+              ) : (
+                <p className="text-blue-600">โปรดรอสักครู่...</p>
+              )}
             </div>
           ) : (
             <div className="text-center max-w-md">

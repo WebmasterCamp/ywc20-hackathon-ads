@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, ChangeEvent } from "react"
-import { Star } from "lucide-react"
+import { MessageSquare } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dialog"
 
 export function FeedbackDialog() {
-  const [rating, setRating] = useState(0)
   const [feedback, setFeedback] = useState("")
   const [open, setOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -22,17 +21,15 @@ export function FeedbackDialog() {
   const handleSubmit = () => {
     // Log the feedback data more visibly
     console.log('%c Feedback Submitted ', 'background: #222; color: #bada55; font-size: 16px;')
-    console.log(' Rating:', rating, 'out of 5')
     console.log(' Comment:', feedback || '(No comment provided)')
     
     // Here you would normally send the feedback to your backend
-    // For example: sendFeedbackToAPI({ rating, feedback })
+    // For example: sendFeedbackToAPI({ feedback })
     
     setSubmitted(true)
     
     // Reset after 2 seconds and close dialog
     setTimeout(() => {
-      setRating(0)
       setFeedback("")
       setSubmitted(false)
       setOpen(false)
@@ -42,13 +39,13 @@ export function FeedbackDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full max-w-xs bg-black text-white text-center font-medium rounded-full py-5 hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] active:shadow-lg">ให้คะแนนการเช่า</Button>
+        <Button className="w-full max-w-xs bg-black text-white text-center font-medium rounded-full py-5 hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] active:shadow-lg">แชร์ความคิดเห็น</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>ให้คะแนนประสบการณ์การเช่า</DialogTitle>
+          <DialogTitle>แชร์ความคิดเห็นของคุณ</DialogTitle>
           <DialogDescription>
-            กรุณาให้คะแนนและความคิดเห็นเกี่ยวกับประสบการณ์การเช่าสัตว์เลี้ยงของคุณ
+            กรุณาแชร์ความคิดเห็นเกี่ยวกับประสบการณ์การเช่าสัตว์เลี้ยงของคุณ
           </DialogDescription>
         </DialogHeader>
         
@@ -61,22 +58,7 @@ export function FeedbackDialog() {
           <>
             <div className="flex justify-center py-4">
               <div className="flex gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    type="button"
-                    onClick={() => setRating(star)}
-                    className="focus:outline-none"
-                  >
-                    <Star
-                      className={`w-8 h-8 ${
-                        rating >= star
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-gray-300"
-                      }`}
-                    />
-                  </button>
-                ))}
+                <MessageSquare className="w-8 h-8 text-blue-500" />
               </div>
             </div>
             
@@ -91,7 +73,7 @@ export function FeedbackDialog() {
               <Button
                 type="button"
                 onClick={handleSubmit}
-                disabled={rating === 0}
+                disabled={feedback.trim() === ""}
                 className="w-full bg-black text-white font-medium rounded-full hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] active:shadow-lg py-3"
               >
                 ส่งความคิดเห็น
