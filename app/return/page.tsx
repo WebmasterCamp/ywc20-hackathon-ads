@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, Suspense } from "react"
+import { useState, Suspense } from "react"
 import React from "react"
 import { ArrowLeft, CreditCard, FileCheck, Calendar, Clipboard, Package, Check } from "lucide-react"
 import Link from "next/link"
@@ -14,7 +14,7 @@ function ReturnContent() {
   const petName = searchParams.get('petName') || 'สัตว์เลี้ยง'
   
   const [completed, setCompleted] = useState(false)
-  const [isProcessing, setIsProcessing] = useState(true)
+  const [isProcessing, setIsProcessing] = useState(false)
 
   // Steps for the entire process (showing all steps with step 6 active)
   const steps = [
@@ -26,21 +26,14 @@ function ReturnContent() {
     { number: "06", title: "ส่งคืน\nสัตว์เลี้ยง", isActive: true, isCompleted: false, icon: Check },
   ]
 
-  // Auto-complete the return process after a delay
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsProcessing(false)
-      
-      // After showing the return process, mark as completed after a delay
-      const completionTimer = setTimeout(() => {
-        setCompleted(true)
-      }, 2000)
-      
-      return () => clearTimeout(completionTimer)
-    }, 2500)
-    
-    return () => clearTimeout(timer)
-  }, [])
+  // Handle return process manually instead of auto-completing
+  const handleStartReturn = () => {
+    setIsProcessing(true)
+  }
+  
+  const handleConfirmReturn = () => {
+    setCompleted(true)
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -69,7 +62,7 @@ function ReturnContent() {
                           : 'bg-blue-500 text-white' 
                         : 'bg-gray-200 text-gray-400'
                       }
-                      ${step.number === "06" ? 'animate-pulse' : ''}
+                      ${step.number === "06" && isProcessing ? 'animate-pulse' : ''}
                     `}
                   >
                     {step.icon && React.createElement(step.icon, { className: "w-6 h-6" })}
@@ -95,21 +88,29 @@ function ReturnContent() {
           </div>
         </div>
 
-        {/* Content Area */}
-        <div className="flex flex-col items-center justify-center">
-          {isProcessing ? (
+        {/* Main Content */}
+        <div className="flex justify-center">
+          {!isProcessing && !completed ? (
             <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-100 max-w-md">
-              <div className="animate-pulse mb-4">
+              <div className="mb-4">
                 <div className="w-12 h-12 mx-auto rounded-full bg-blue-500 flex items-center justify-center">
-                  <Check className="w-6 h-6 text-white" />
+                  <Package className="w-6 h-6 text-white" />
                 </div>
               </div>
               <h3 className="text-xl font-semibold text-blue-700 mb-2">
-                กำลังส่งคืนสัตว์เลี้ยง
+                เริ่มขั้นตอนการส่งคืน {petName}
               </h3>
-              <p className="text-blue-600">โปรดรอสักครู่...</p>
+              <p className="text-blue-600 mb-4">คลิกปุ่มด้านล่างเพื่อเริ่มกระบวนการส่งคืนสัตว์เลี้ยง</p>
+              
+              <Button 
+                onClick={handleStartReturn}
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 text-lg font-medium"
+              >
+                <Package className="mr-2 h-5 w-5" />
+                เริ่มการส่งคืน
+              </Button>
             </div>
-          ) : !completed ? (
+          ) : isProcessing && !completed ? (
             <div className="text-center p-6 bg-blue-50 rounded-lg border border-blue-100 max-w-md">
               <div className="mb-4">
                 <div className="w-12 h-12 mx-auto rounded-full bg-blue-500 flex items-center justify-center">
@@ -144,7 +145,7 @@ function ReturnContent() {
               </div>
               
               <Button 
-                onClick={() => setCompleted(true)}
+                onClick={handleConfirmReturn}
                 className="w-full bg-green-500 hover:bg-green-600 text-white py-3 text-lg font-medium"
               >
                 <Check className="mr-2 h-5 w-5" />
