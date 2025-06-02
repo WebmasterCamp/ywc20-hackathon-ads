@@ -132,20 +132,6 @@ export default function RentPetPage({ params }: Props) {
             {phoneError && <div className="text-red-500 text-sm mt-1">{phoneError}</div>}
           </div>
 
-          {/* Location/Address Field */}
-          <div>
-            <h2 className="text-lg font-semibold mb-4">สถานที่/ที่อยู่สำหรับส่งมอบ</h2>
-            <Input
-              type="text"
-              required
-              className="font-kanit text-base"
-              placeholder="กรอกที่อยู่หรือสถานที่สำหรับส่งมอบสัตว์เลี้ยง"
-              value={location}
-              onChange={e => setLocation(e.target.value)}
-            />
-            {locationError && <div className="text-red-500 text-sm mt-1">{locationError}</div>}
-          </div>
-
           <div>
             <h2 className="text-lg font-semibold mb-4">ขนาดพื้นที่โดยประมาณ</h2>
             <Select>
@@ -153,13 +139,27 @@ export default function RentPetPage({ params }: Props) {
                 <SelectValue placeholder="ขนาด..." />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="small">น้อยกว่า 50 ตร.ม.</SelectItem>
-                <SelectItem value="medium">50-100 ตร.ม.</SelectItem>
-                <SelectItem value="large">มากกว่า 100 ตร.ม.</SelectItem>
+                <SelectItem value="small-room">ห้อง/คอนโดขนาดเล็ก (น้อยกว่า 30 ตร.ม.)</SelectItem>
+                <SelectItem value="medium-house">อพาร์ทเมนต์/บ้านขนาดกลาง (30-70 ตร.ม.)</SelectItem>
+                <SelectItem value="large-house">บ้านเดี่ยว/ทาวน์โฮมขนาดใหญ่ (มากกว่า 70 ตร.ม.)</SelectItem>
+                <SelectItem value="outdoor">มีสนามหรือพื้นที่กลางแจ้ง</SelectItem>
+                <SelectItem value="other">อื่น ๆ</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
+          {/* Location/Address Field */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">สถานที่/ที่อยู่สำหรับส่งมอบ</h2>
+            <Input
+              type="text"
+              className="font-kanit text-base"
+              placeholder="กรอกที่อยู่หรือสถานที่สำหรับส่งมอบสัตว์เลี้ยง (ถ้ามี)"
+              value={location}
+              onChange={e => setLocation(e.target.value)}
+            />
+          </div>
+          
           <div>
             <h2 className="text-lg font-semibold mb-4">สถานที่เลี้ยง</h2>
             <div className="bg-gray-100 rounded-lg overflow-hidden h-[300px] relative mb-4">
@@ -204,13 +204,7 @@ export default function RentPetPage({ params }: Props) {
               } else {
                 setPhoneError('');
               }
-              if (!location || location.length < 5) {
-                setLocationError('กรุณากรอกที่อยู่สำหรับส่งมอบ');
-                hasError = true;
-              } else {
-                setLocationError('');
-              }
-              if (hasError) return;
+
               setLoading(true)
               // Here you would normally submit the form data to your backend
               // For now, we'll just simulate a delay
