@@ -106,7 +106,7 @@ export default function RentPetPage({ params }: Props) {
                   />
                   <Label
                     htmlFor="idCard"
-                    className="inline-block px-6 py-3 bg-black text-white rounded-md cursor-pointer hover:bg-gray-800"
+                    className="inline-block px-6 py-3 bg-black text-white rounded-md cursor-pointer hover:bg-gray-800 rounded-full"
                   >
                     อัพโหลดรูปภาพ
                   </Label>
@@ -195,7 +195,7 @@ export default function RentPetPage({ params }: Props) {
 
           <Button 
             size="lg" 
-            className="w-full bg-black text-white hover:bg-gray-800"
+            className="w-full bg-black text-white hover:bg-gray-800 rounded-full"
             onClick={() => {
               let hasError = false;
               if (!phone || phone.length < 9) {

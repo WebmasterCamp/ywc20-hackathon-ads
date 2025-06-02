@@ -71,7 +71,7 @@ export default function PetPage({ params }: Props) {
               <div className="text-2xl font-bold">{pet.pricePerDay.toLocaleString()} บาท/ วัน</div>
             </div>
             <Link href={`/pet/${id}/rent`}>
-              <Button className="bg-black text-white hover:bg-gray-800 px-6">
+              <Button className="bg-black text-white hover:bg-gray-800 px-6 rounded-full">
                 สนใจเช่า
               </Button>
             </Link>
