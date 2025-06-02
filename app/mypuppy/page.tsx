@@ -82,6 +82,11 @@ export default function MyPuppyPage() {
                 ส่งคืนสัตว์เลี้ยง
             </button>
           </Link>
+          <Link href="/">
+              <button className="bg-[#05A75B] text-white hover:bg-green-500 px-2 py-3 ml-4 rounded-md">
+                กลับหน้าแรก
+              </button>
+          </Link>
         </div>
 
         {/* Relationship Checklist */}

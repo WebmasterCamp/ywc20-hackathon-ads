@@ -69,15 +69,22 @@ export default function HomePage() {
               ติดต่อเรา
             </Link>
           </nav>
+          
           <div className="flex items-center space-x-4">
             {currentUser ? (
               <>
-                <span className="text-gray-600">สวัสดี, {currentUser.name || currentUser.email}</span>
+          <Link href="/mypuppy">
+                  <Button className="bg-[#71AAC1] text-white hover:bg-[#05A75B] flex items-center gap-2 px-5 py-2 rounded-full">
+                    My puppy <span className="inline-block rotate-45">🦴</span>
+                  </Button>
+                </Link> 
+                <span className="text-white">สวัสดี, {currentUser.name || currentUser.email}</span>
                 <Button onClick={handleLogout} className="bg-[#05A75B] text-white hover:bg-green-500">
                   ออกจากระบบ
                 </Button>
               </>
             ) : (
+              
               <Link href="/auth">
                 <Button className="bg-[#05A75B] text-white hover:bg-green-500">เข้าสู่ระบบ</Button>
               </Link>
@@ -91,7 +98,7 @@ export default function HomePage() {
         <div className="container mx-auto h-dvh px-4 pt-16 md:pt-8 pb-2 flex flex-col  items-center">
           <div className="w-full h-full flex flex-col items-center justify-start text-center pt-10 md:pt-10">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white"><span className=" text-2xl md:text-3xl">ไม่ยากถ้าอยาก</span><br />ลองเลี้ยง</h1>
-            <p className="text-base md:text-lg text-sky-800 mb-8 max-w-md text-white">
+            <p className="text-base md:text-lg mb-8 max-w-md text-white">
             แพลตฟอร์มสำหรับผู้ที่อยากเลี้ยงสัตว์ แต่ยังไม่มั่นใจว่าจะสามารถเลี้ยงได้หรือไม่ กังวลเรื่องเวลา รวมถึงข้อจำกัดต่างๆ ให้สามารถทดลองเลี้ยงจริงผ่านการเช่าสัตว์เลี้ยง ก่อนตัดสินใจรับเลี้ยงอย่างถาวร
             </p>
             <Link href="/browse">
@@ -204,6 +211,62 @@ export default function HomePage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Packages Section */}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">แพ็คเกจ</h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Package 1 */}
+            <div className="bg-gray-50 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">ลองเลี้ยงมือใหม่</h3>
+              <p className="text-sm text-gray-600 mb-2">(7 วัน)</p>
+              
+              <div className="my-6">
+                <p className="text-gray-700 mb-4">เข้าสู่ปี+ห้องอาหาร+อาหาร+</p>
+                <p className="text-gray-700">ของเล่น 1 ชุด</p>
+              </div>
+              
+              <Link href="/browse" className="block">
+                <Button className="w-full bg-gray-900 text-white hover:bg-gray-800">สนใจ</Button>
+              </Link>
+            </div>
+
+            {/* Package 2 */}
+            <div className="bg-gray-50 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">ลองเลี้ยงเพื่อนซี้</h3>
+              <p className="text-sm text-gray-600 mb-2">(14 วัน)</p>
+              
+              <div className="my-6">
+                <p className="text-gray-700 mb-4">เข้าสู่ปี+ห้องอาหาร+</p>
+                <p className="text-gray-700 mb-4">อาหารสูตร 1 กระสอบ + กระบะทราย +</p>
+                <p className="text-gray-700">ของเล่น 1 ชุด</p>
+              </div>
+              
+              <Link href="/browse" className="block">
+                <Button className="w-full bg-gray-900 text-white hover:bg-gray-800">สนใจ</Button>
+              </Link>
+            </div>
+
+            {/* Package 3 */}
+            <div className="bg-gray-50 rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">ลองเลี้ยงผู้รู้</h3>
+              <p className="text-sm text-gray-600 mb-2">(20 วัน)</p>
+              
+              <div className="my-6">
+                <p className="text-gray-700 mb-4">เข้าสู่ปี+ห้องอาหาร+อาหาร+อาหาร+ของเล่น 1 ชุด</p>
+              </div>
+              
+              <Link href="/browse" className="block">
+                <Button className="w-full bg-gray-900 text-white hover:bg-gray-800">สนใจ</Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
