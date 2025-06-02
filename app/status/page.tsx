@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react"
 import React from "react"
+import Image from "next/image"
 import { ArrowLeft, CreditCard, FileCheck, Calendar as CalendarIcon, Clipboard, Package, Check, Clock } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
@@ -448,9 +449,11 @@ function StatusContent() {
               </h3>
               <p className="text-gray-700 mb-6">กำลังตรวจสอบสภาพสัตว์เลี้ยงก่อนรับคืน</p>
               <div className="flex flex-col items-center">
-                <img
+                <Image
                   src="/dog-check.png"
                   alt="dog"
+                  width={160}
+                  height={160}
                   className="w-40 h-40 rounded-full object-cover mb-4 shadow-md border-4 border-white"
                   style={{ fontFamily: 'var(--font-kanit)' }}
                 />
