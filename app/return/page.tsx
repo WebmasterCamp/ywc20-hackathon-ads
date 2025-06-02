@@ -7,7 +7,6 @@ import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { FeedbackDialog } from "@/components/feedback-dialog"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
 
 function ReturnContent() {
   const searchParams = useSearchParams()
