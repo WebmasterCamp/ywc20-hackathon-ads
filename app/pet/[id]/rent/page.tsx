@@ -154,7 +154,7 @@ export default function RentPetPage({ params }: Props) {
             <Input
               type="text"
               className="font-kanit text-base"
-              placeholder="กรอกที่อยู่หรือสถานที่สำหรับส่งมอบสัตว์เลี้ยง (ถ้ามี)"
+              placeholder="กรอกที่อยู่หรือสถานที่สำหรับส่งมอบสัตว์เลี้ยง"
               value={location}
               onChange={e => setLocation(e.target.value)}
             />
