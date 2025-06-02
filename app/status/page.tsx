@@ -57,9 +57,6 @@ function StatusContent() {
     }
   }, [appointmentDate, appointmentTimeStart, appointmentTimeEnd])
   
-  const handleDeliveryComplete = () => {
-    setCurrentStep(6)
-  }
   
   const handleReturnComplete = () => {
     setCompleted(true)
