@@ -165,7 +165,7 @@ function ReturnContent() {
                 </div>
                 
                 <Link 
-                  href="/browse" 
+                  href="/" 
                   className="w-full bg-white text-black border-2 border-black font-medium rounded-full hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] active:shadow-lg py-2"
                 >
                   กลับสู่หน้าหลัก
