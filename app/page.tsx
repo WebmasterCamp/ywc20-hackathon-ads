@@ -52,20 +52,20 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white">
+      <header className="bg-[#71AAC1]">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold text-black">PetRenting</div>
+          <Image src="/images/logo.svg" alt="logo" width={30} height={30} />
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="#hero" className="text-gray-600 hover:text-gray-900">
+            <Link href="#hero" className="text-white hover:text-gray-900">
               หน้าแรก
             </Link>
-            <Link href="/browse" className="text-gray-600 hover:text-gray-900">
+            <Link href="/browse" className="text-white hover:text-gray-900">
               เช่าสัตว์เลี้ยง
             </Link>
-            <Link href="#services" className="text-gray-600 hover:text-gray-900">
+            <Link href="#services" className="text-white hover:text-gray-900">
               บริการของเรา
             </Link>
-            <Link href="#contact" className="text-gray-600 hover:text-gray-900">
+            <Link href="#contact" className="text-white hover:text-gray-900">
               ติดต่อเรา
             </Link>
           </nav>
@@ -73,13 +73,13 @@ export default function HomePage() {
             {currentUser ? (
               <>
                 <span className="text-gray-600">สวัสดี, {currentUser.name || currentUser.email}</span>
-                <Button onClick={handleLogout} className="bg-green-500 text-white hover:bg-green-600">
+                <Button onClick={handleLogout} className="bg-[#05A75B] text-white hover:bg-green-500">
                   ออกจากระบบ
                 </Button>
               </>
             ) : (
               <Link href="/auth">
-                <Button className="bg-green-500 text-white hover:bg-green-600">เข้าสู่ระบบ</Button>
+                <Button className="bg-[#05A75B] text-white hover:bg-green-500">เข้าสู่ระบบ</Button>
               </Link>
             )}
           </div>
@@ -87,42 +87,31 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section id="hero" className="bg-sky-100 text-white relative overflow-hidden">
-        <div className="container mx-auto px-4 py-16 md:py-24 flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 text-left z-10">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-sky-900">ไม่ยากถ้าอยาก<br />ลองเลี้ยง</h1>
-            <p className="text-base md:text-lg text-sky-800 mb-8 max-w-md">
-              บริการเช่าสัตว์เลี้ยงที่คุณสามารถเลือกได้ตามต้องการ เพื่อให้คุณได้ทดลองเลี้ยงก่อนตัดสินใจ ทั้งสุนัข แมว และสัตว์เลี้ยงอื่นๆอีกมากมาย
+      <section id="hero" className="bg-sky-100 text-white relative min-h-dvh h-[110dvh] min-w-full overflow-hidden bg-cover bg-bottom bg-no-repeat" style={{ backgroundImage: "url('/images/landingpageHeroBg.webp')" }}>
+        <div className="container mx-auto h-dvh px-4 pt-16 md:pt-8 pb-2 flex flex-col  items-center">
+          <div className="w-full h-full flex flex-col items-center justify-start text-center pt-10 md:pt-10">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white"><span className=" text-2xl md:text-3xl">ไม่ยากถ้าอยาก</span><br />ลองเลี้ยง</h1>
+            <p className="text-base md:text-lg text-sky-800 mb-8 max-w-md text-white">
+            แพลตฟอร์มสำหรับผู้ที่อยากเลี้ยงสัตว์ แต่ยังไม่มั่นใจว่าจะสามารถเลี้ยงได้หรือไม่ กังวลเรื่องเวลา รวมถึงข้อจำกัดต่างๆ ให้สามารถทดลองเลี้ยงจริงผ่านการเช่าสัตว์เลี้ยง ก่อนตัดสินใจรับเลี้ยงอย่างถาวร
             </p>
             <Link href="/browse">
-              <Button className="bg-green-500 text-white hover:bg-green-600 px-8 py-3 rounded-full">
-                เริ่มเลี้ยงเลย
+              <Button className="bg-[#05A75B] text-white hover:bg-green-500 px-8 py-3 rounded-full">
+                เริ่มหาเพื่อนคู่ใจ
               </Button>
             </Link>
           </div>
-          <div className="md:w-1/2 relative z-10 mt-8 md:mt-0">
-            <div className="relative">
-              <Image 
-                src="/images/herosectiondog.png" 
-                alt="Happy dog" 
-                width={600} 
-                height={600} 
-                className="object-contain" 
-                priority
-              />
-              <div className="absolute -top-10 -right-10 w-32 h-32 rounded-full bg-sky-200 opacity-50"></div>
-              <div className="absolute top-20 -left-10 w-16 h-16 rounded-full bg-sky-200 opacity-50"></div>
-              <div className="absolute bottom-20 right-20 w-24 h-24 rounded-full bg-sky-200 opacity-50"></div>
-            </div>
-          </div>
         </div>
-        
-        {/* Wave design at bottom */}
-        <div className="absolute bottom-0 left-0 w-full">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
-            <path fill="#ffffff" fillOpacity="1" d="M0,192L80,176C160,160,320,128,480,128C640,128,800,160,960,165.3C1120,171,1280,149,1360,138.7L1440,128L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
-          </svg>
-        </div>
+          <Image src="/images/herosectiondog.png" alt="Hero" width={500} height={500} className="max-w-[400px] md:max-w-full  absolute bottom-0 left-1/2 -translate-x-1/2" />
+          
+          {/* Blur gradient overlay */}
+          <div className="absolute bottom-0 left-0 right-0 h-[20px] bg-[#E0F2FA] blur-3xl" />
+          
+          {/* Wave design at bottom */}
+          {/* <div className="absolute bottom-0 left-0 w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
+              <path fill="#ffffff" fillOpacity="1" d="M0,192L80,176C160,160,320,128,480,128C640,128,800,160,960,165.3C1120,171,1280,149,1360,138.7L1440,128L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+            </svg>
+          </div> */}
       </section>
 
       {/* Service Overview */}
