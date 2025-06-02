@@ -25,6 +25,12 @@ export default function RentPetPage({ params }: Props) {
   const [loading, setLoading] = useState(false)
   const [idCardImage, setIdCardImage] = useState<string | null>(null)
 
+  // Phone and location state
+  const [phone, setPhone] = useState('')
+  const [location, setLocation] = useState('')
+  const [phoneError, setPhoneError] = useState('')
+  const [locationError, setLocationError] = useState('')
+
   if (!pet) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -109,6 +115,37 @@ export default function RentPetPage({ params }: Props) {
             </div>
           </div>
 
+          {/* Phone Number Field */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">เบอร์โทรศัพท์ติดต่อ</h2>
+            <Input
+              type="tel"
+              pattern="[0-9]*"
+              inputMode="numeric"
+              maxLength={15}
+              required
+              className="font-kanit text-base"
+              placeholder="กรอกเบอร์โทรศัพท์ของคุณ"
+              value={phone}
+              onChange={e => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
+            />
+            {phoneError && <div className="text-red-500 text-sm mt-1">{phoneError}</div>}
+          </div>
+
+          {/* Location/Address Field */}
+          <div>
+            <h2 className="text-lg font-semibold mb-4">สถานที่/ที่อยู่สำหรับส่งมอบ</h2>
+            <Input
+              type="text"
+              required
+              className="font-kanit text-base"
+              placeholder="กรอกที่อยู่หรือสถานที่สำหรับส่งมอบสัตว์เลี้ยง"
+              value={location}
+              onChange={e => setLocation(e.target.value)}
+            />
+            {locationError && <div className="text-red-500 text-sm mt-1">{locationError}</div>}
+          </div>
+
           <div>
             <h2 className="text-lg font-semibold mb-4">ขนาดพื้นที่โดยประมาณ</h2>
             <Select>
@@ -126,12 +163,15 @@ export default function RentPetPage({ params }: Props) {
           <div>
             <h2 className="text-lg font-semibold mb-4">สถานที่เลี้ยง</h2>
             <div className="bg-gray-100 rounded-lg overflow-hidden h-[300px] relative mb-4">
-              <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.5377227833847!2d100.5622233!3d13.7455416!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ0JzQzLjkiTiAxMDDCsDMzJzQ0LjAiRQ!5e0!3m2!1sen!2sth!4v1623144611444!5m2!1sen!2sth" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0 }} 
+              <iframe
+                src={`https://www.google.com/maps?q=${encodeURIComponent(location || 'Bangkok, Thailand')}&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
                 loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                title="แผนที่สถานที่เลี้ยง"
               />
             </div>
           </div>
@@ -157,6 +197,20 @@ export default function RentPetPage({ params }: Props) {
             size="lg" 
             className="w-full bg-black text-white hover:bg-gray-800 rounded-full"
             onClick={() => {
+              let hasError = false;
+              if (!phone || phone.length < 9) {
+                setPhoneError('กรุณากรอกเบอร์โทรศัพท์ที่ถูกต้อง');
+                hasError = true;
+              } else {
+                setPhoneError('');
+              }
+              if (!location || location.length < 5) {
+                setLocationError('กรุณากรอกที่อยู่สำหรับส่งมอบ');
+                hasError = true;
+              } else {
+                setLocationError('');
+              }
+              if (hasError) return;
               setLoading(true)
               // Here you would normally submit the form data to your backend
               // For now, we'll just simulate a delay
