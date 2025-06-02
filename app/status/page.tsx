@@ -223,7 +223,7 @@ function StatusContent() {
                 
                 <Link 
                   href="/" 
-                  className="w-full max-w-xs bg-black text-white text-center font-medium rounded-full hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] active:shadow-lg"
+                  className="w-full bg-white text-black border-2 border-black font-medium rounded-full hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl hover:translate-y-[-2px] active:translate-y-[0px] active:shadow-lg py-2"
                 >
                   กลับสู่หน้าหลัก
                 </Link>
