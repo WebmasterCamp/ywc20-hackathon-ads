@@ -2,11 +2,13 @@
 
 import { useState, Suspense } from "react"
 import React from "react"
-import { ArrowLeft, CreditCard, FileCheck, Calendar, Clipboard, Package, Check } from "lucide-react"
+import { ArrowLeft, CreditCard, FileCheck, Calendar, Clipboard, Package, Check, Upload, X } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { FeedbackDialog } from "@/components/feedback-dialog"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import Image from "next/image"
 
 function ReturnContent() {
   const searchParams = useSearchParams()
@@ -14,6 +16,36 @@ function ReturnContent() {
   
   const [completed, setCompleted] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
+  const [checkItems, setCheckItems] = useState({
+    health: false,
+    injury: false,
+    behavior: false,
+    equipment: false
+  })
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setUploadedFile(file)
+      // Create preview URL for images
+      if (file.type.startsWith('image/')) {
+        const url = URL.createObjectURL(file)
+        setPreviewUrl(url)
+      } else {
+        setPreviewUrl(null)
+      }
+    }
+  }
+
+  const removeFile = () => {
+    setUploadedFile(null)
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl)
+      setPreviewUrl(null)
+    }
+  }
 
   // Steps for the entire process (showing all steps with step 6 active)
   const steps = [
@@ -122,23 +154,108 @@ function ReturnContent() {
               <p className="text-blue-600 mb-4">กำลังตรวจสอบสภาพสัตว์เลี้ยงก่อนรับคืน</p>
               
               <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
+                <div className="mb-6">
+                  <h4 className="font-medium text-gray-800 mb-2">อัพโหลดรูปภาพหรือเอกสารยืนยัน:</h4>
+                  <div className="flex items-center justify-center w-full">
+                    <label htmlFor="file-upload" className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer hover:bg-gray-50 ${uploadedFile ? 'border-green-300 bg-green-50' : 'border-gray-300'}`}>
+                      {!uploadedFile ? (
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <Upload className="w-8 h-8 mb-3 text-gray-400" />
+                          <p className="mb-2 text-sm text-gray-500 px-2">
+                            <span className="font-semibold">คลิกเพื่ออัพโหลดไฟล์</span> หรือลากและวางที่นี่
+                          </p>
+                          <p className="text-xs text-gray-500">PNG, JPG, PDF ขนาดไม่เกิน 10MB</p>
+                        </div>
+                      ) : (
+                        <div className="relative w-full h-full flex items-center justify-center">
+                          {previewUrl ? (
+                            <Image src={previewUrl} alt="Preview" className="max-h-full max-w-full object-contain rounded" />
+                          ) : (
+                            <div className="flex items-center">
+                              <FileCheck className="w-6 h-6 text-green-500 mr-2" />
+                              <span className="text-green-500">{uploadedFile.name}</span>
+                            </div>
+                          )}
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault()
+                              removeFile()
+                            }}
+                            className="absolute top-2 right-2 p-1 bg-red-100 rounded-full hover:bg-red-200"
+                          >
+                            <X className="w-4 h-4 text-red-500" />
+                          </button>
+                        </div>
+                      )}
+                      <input
+                        id="file-upload"
+                        type="file"
+                        className="hidden"
+                        accept="image/*,.pdf"
+                        onChange={handleFileUpload}
+                      />
+                    </label>
+                  </div>
+                  {uploadedFile && (
+                    <div className="mt-2 text-sm text-gray-500">
+                      ไฟล์ที่อัพโหลด: {uploadedFile.name} ({(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB)
+                    </div>
+                  )}
+                </div>
+
                 <h4 className="font-medium text-gray-800 mb-2">รายการตรวจสอบ:</h4>
-                <ul className="text-left text-sm space-y-2">
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-green-500 mr-2" />
-                    <span>สุขภาพสัตว์เลี้ยงปกติ</span>
+                <ul className="text-left text-sm space-y-4">
+                  <li className="flex items-center space-x-3">
+                    <Checkbox
+                      id="health"
+                      checked={checkItems.health}
+                      onCheckedChange={(checked) => 
+                        setCheckItems(prev => ({ ...prev, health: checked === true }))
+                      }
+                      className="data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500"
+                    />
+                    <label htmlFor="health" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      สุขภาพสัตว์เลี้ยงปกติ
+                    </label>
                   </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-green-500 mr-2" />
-                    <span>ไม่มีบาดแผลหรือการบาดเจ็บ</span>
+                  <li className="flex items-center space-x-3">
+                    <Checkbox
+                      id="injury"
+                      checked={checkItems.injury}
+                      onCheckedChange={(checked) => 
+                        setCheckItems(prev => ({ ...prev, injury: checked === true }))
+                      }
+                      className="data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500"
+                    />
+                    <label htmlFor="injury" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      ไม่มีบาดแผลหรือการบาดเจ็บ
+                    </label>
                   </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-green-500 mr-2" />
-                    <span>พฤติกรรมปกติ</span>
+                  <li className="flex items-center space-x-3">
+                    <Checkbox
+                      id="behavior"
+                      checked={checkItems.behavior}
+                      onCheckedChange={(checked) => 
+                        setCheckItems(prev => ({ ...prev, behavior: checked === true }))
+                      }
+                      className="data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500"
+                    />
+                    <label htmlFor="behavior" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      พฤติกรรมปกติ
+                    </label>
                   </li>
-                  <li className="flex items-center">
-                    <Check className="w-4 h-4 text-green-500 mr-2" />
-                    <span>อุปกรณ์ครบถ้วน</span>
+                  <li className="flex items-center space-x-3">
+                    <Checkbox
+                      id="equipment"
+                      checked={checkItems.equipment}
+                      onCheckedChange={(checked) => 
+                        setCheckItems(prev => ({ ...prev, equipment: checked === true }))
+                      }
+                      className="data-[state=checked]:bg-green-500 data-[state=checked]:border-green-500 mb-2"
+                    />
+                    <label htmlFor="equipment" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      อุปกรณ์ครบถ้วน
+                    </label>
                   </li>
                 </ul>
               </div>
