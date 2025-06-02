@@ -29,7 +29,7 @@ export default function RentPetPage({ params }: Props) {
   const [phone, setPhone] = useState('')
   const [location, setLocation] = useState('')
   const [phoneError, setPhoneError] = useState('')
-  const [locationError, setLocationError] = useState('')
+  // const [locationError, setLocationError] = useState('')
 
   if (!pet) {
     return (
@@ -197,10 +197,8 @@ export default function RentPetPage({ params }: Props) {
             size="lg" 
             className="w-full bg-black text-white hover:bg-gray-800 rounded-full"
             onClick={() => {
-              let hasError = false;
               if (!phone || phone.length < 9) {
                 setPhoneError('กรุณากรอกเบอร์โทรศัพท์ที่ถูกต้อง');
-                hasError = true;
               } else {
                 setPhoneError('');
               }
