@@ -15,6 +15,8 @@ interface User {
 
 export default function HomePage() {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [email, setEmail] = useState("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -350,6 +352,44 @@ export default function HomePage() {
                   <Youtube size={20} />
                 </Link>
               </div>
+              
+              <h4 className="font-semibold text-gray-900 mb-4 mt-6">รับข่าวสาร</h4>
+              <form onSubmit={(e) => {
+                e.preventDefault()
+                
+                // Accept any input that contains '@' - this ensures Thai domains will work
+                const hasAtSymbol = email.includes('@')
+                
+                if (!hasAtSymbol) {
+                  alert("กรุณากรอกอีเมลที่มีเครื่องหมาย @")
+                  return
+                }
+                
+                setIsSubmitting(true)
+                
+                // Simulate form submission
+                setTimeout(() => {
+                  alert(`ขอบคุณสำหรับการลงทะเบียน: ${email}`)
+                  setEmail("")
+                  setIsSubmitting(false)
+                }, 1000)
+              }} className="flex flex-col gap-2">
+                <input
+                  type="text"
+                  placeholder="your@email.com หรือ ทดสอบ@ทดสอบ.ไทย"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  required
+                />
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="bg-[#05A75B] text-white px-4 py-2 rounded-md hover:bg-green-600 disabled:opacity-50"
+                >
+                  {isSubmitting ? "กำลังส่ง..." : "สมัครรับข่าวสาร"}
+                </button>
+              </form>
             </div>
           </div>
 
