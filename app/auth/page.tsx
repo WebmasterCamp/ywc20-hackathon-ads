@@ -12,17 +12,32 @@ interface User {
   name?: string
 }
 
+// Function to validate email including internationalized domain names (IDNs)
+const validateEmail = (email: string): boolean => {
+  // This regex supports internationalized domain names
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/u;
+  return emailRegex.test(email);
+};
+
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
   const [error, setError] = useState("")
+  const [emailError, setEmailError] = useState("")
   const router = useRouter()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
+    setEmailError("")
+    
+    // Validate email first
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address")
+      return
+    }
 
     if (isLogin) {
       // Handle Login
@@ -102,13 +117,23 @@ export default function AuthPage() {
             </label>
             <Input
               id="email"
-              type="email"
+              type="text"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1"
-              placeholder="you@example.com"
+              onChange={(e) => {
+                setEmail(e.target.value)
+                if (e.target.value) {
+                  setEmailError(validateEmail(e.target.value) ? "" : "Please enter a valid email address")
+                } else {
+                  setEmailError("")
+                }
+              }}
+              className={`mt-1 ${emailError ? "border-red-500" : ""}`}
+              placeholder="you@example.com or ทดสอบ@ทดสอบ.ไทย"
             />
+            {emailError && (
+              <p className="text-red-500 text-xs mt-1">{emailError}</p>
+            )}
           </div>
 
           <div>
